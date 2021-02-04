@@ -1,0 +1,40 @@
+service cloud.firestore {
+    match /databases/{database}/documents {
+      // Allow the user to access documents in the "cities" collection
+      // only if they are authenticated.
+      match /users/{user} {
+        allow read: if true;
+        allow write, update: if request.auth.uid == user;
+      }
+      match /posts/{user}/userPosts {
+        allow read: if true;
+        allow write: if request.auth.uid == user;
+  
+      }
+      match /posts/{user}/userPosts/{postId} {
+        allow read: if true;
+        allow write: if request.auth.uid == user;
+        
+      }
+      match /posts/{user}/userPosts/{postId}/likes/{likeId} {
+        allow read: if true;
+        allow write: if request.auth.uid == likeId;
+      }
+      match /posts/{user}/userPosts/{postId}/comments/{commentId} {
+        allow read: if true;
+        allow write: if request.auth.uid != null;
+      }
+      match /following/{user}/userFollowing/{following} {
+        allow read: if true;
+        allow write: if user == request.auth.uid;
+  
+      }
+      match /chats/{chatId}{
+        allow read, update: if request.auth.uid in resource.data.users;
+        allow write: if request.auth.uid != null;
+      }
+      match /chats/{chatId}/messages/{documents=**}{
+        allow read, write: if request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.users;
+      }
+    }
+  } 
