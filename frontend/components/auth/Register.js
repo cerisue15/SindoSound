@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Button, TextInput, Text } from 'react-native'
-import { form, container } from '../styles'
+import { form, container, utils, text } from '../styles';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 import firebase from 'firebase'
@@ -48,7 +49,13 @@ export default function Register(props) {
     }
 
     return (
-        <View style={container.center}>
+        <View style={[container.center, utils.backgroundBlack]}>
+
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#2560F6', '#00FFF0','transparent']}
+                style={utils.background}
+            />
             <View style={container.formCenter}>
                 <TextInput
                     style={form.textInput}
@@ -79,8 +86,9 @@ export default function Register(props) {
                 />
             </View>
 
-            <View style={form.bottomButton} >
+            <View style={[form.bottomButton, { marginBottom: 50 }]} >
                 <Text
+                    style={text.white}
                     onPress={() => props.navigation.navigate("Login")} >
                     Already have an account? SignIn.
                 </Text>

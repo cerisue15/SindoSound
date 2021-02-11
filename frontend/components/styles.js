@@ -14,9 +14,9 @@ const utils = StyleSheet.create({
         marginBottom: 10,
     },
     profileImageBig: {
-        width: 80,
-        height: 80,
-        borderRadius: 80 / 2,
+        width: 100,
+        height: 100,
+        borderRadius: 100 / 2,
     },
     profileImage: {
         marginRight: 15,
@@ -56,12 +56,16 @@ const utils = StyleSheet.create({
     padding10: {
         padding: 10
     },
-    margin15: {
-        margin: 15
-    },
     padding10Sides: {
         paddingRight: 10,
         paddingLeft: 10,
+    },
+    padding30Sides: {
+        paddingRight: 30,
+        paddingLeft: 30,
+    },
+    margin15: {
+        margin: 15
     },
     margin15Left: {
         marginLeft: 15,
@@ -69,20 +73,44 @@ const utils = StyleSheet.create({
     margin15Right: {
         marginRight: 15,
     },
-    margin5Bottom: {
-        marginBottom: 5,
+    margin: {
+        margin: 5,
+    },
+    padding20Vertical: {
+        paddingVertical: 20,
+    },
+    background: {
+        // width: '100%',
+        // height: 'auto',
+        position: 'absolute',
+        opacity: 0.075,
+        left: 0,
+        right: 0,
+        top: 0,
+        height: '100%'
+    },
+    backgroundBlack: {
+        backgroundColor: 'black',
     },
     backgroundWhite: {
         backgroundColor: 'white',
     },
     borderTopGray: {
-        borderTopWidth: 1,
-        borderColor: 'lightgrey'
+        marginTop:10,
+        borderTopWidth: 0.5,
+        borderColor: 'lightgrey',
+        // width: '90%',
+        alignSelf: 'center'
+    },
+    borderBottomGray: {
+        marginBottom:10,
+        borderBottomWidth: 0.5,
+        borderColor: 'lightgrey',
+        // width: '90%',
+        alignSelf: 'center'
     },
     borderWhite: {
-        borderLeftWidth: 2,
-        borderRightWidth: 2,
-        borderTopWidth: 2,
+        borderWidth: 1,
         borderColor: 'white'
     },
     buttonOutlined: {
@@ -105,17 +133,18 @@ const navbar = StyleSheet.create({
         padding: 20
     },
     custom: {
-        marginTop: 30,
+        marginTop: 50,
         height: 60,
-        backgroundColor: 'white',
+        // backgroundColor: 'black',
         padding: 15,
         borderBottomWidth: 1,
-        borderColor: 'lightgrey'
+        borderColor: 'white'
     },
 
     title: {
         fontWeight: '700',
-        fontSize: 20//'larger',
+        fontSize: 20, //'larger',
+        color: 'white'
     }
 })
 const container = StyleSheet.create({
@@ -152,16 +181,26 @@ const container = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: 'auto',
+    },
+    column: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: 'auto',
 
     },
     formCenter: {
         justifyContent: 'center',
         flex: 1,
-        margin: 25
+        marginHorizontal: 25
     },
     containerImage: {
         flex: 1 / 3,
-        marginVertical: 20
+    },
+    containerGridImage: {
+        flex: 1 / 3,
+        borderWidth: 1,
+        borderColor: 'white',
+        // paddingVertical: 5,
     },
     image: {
         flex: 1,
@@ -170,8 +209,14 @@ const container = StyleSheet.create({
     imageForGrid: {
         flex: 1,
         aspectRatio: 1 / 1,
-        margin: 1,
-        height: (Dimensions.get('window').width - 20) / 3
+        alignSelf: 'center',
+        height: (Dimensions.get('window').width - 30) / 3,
+    },
+    imageForImport: {
+        flex: 1,
+        aspectRatio: 1 / 1,
+        alignSelf: 'center',
+        height: '50%',
     },
     fillHorizontal: {
         flexGrow: 1,
@@ -244,6 +289,11 @@ const text = StyleSheet.create({
         fontWeight: '700',//'bolder',
         fontSize: 20//'large',
     },
+    top5:{
+        textAlign: "center", 
+        backgroundColor: "#000000a0",
+        fontWeight: '700',
+    },
     profileDescription: {
         fontWeight: '300'
     },
@@ -256,7 +306,7 @@ const text = StyleSheet.create({
     },
     username: {
         fontWeight: '600',
-        color: 'black',
+        color: 'white',
     },
     name: {
         color: 'grey',
@@ -286,9 +336,24 @@ const text = StyleSheet.create({
     whitesmoke: {
         color: 'whitesmoke'
     }
+})
 
-
+const modal = StyleSheet.create({
+    modalContainer: {  
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: 'lightgray',
+        borderStyle: 'solid',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1
+    }
 
 })
 
-export { container, form, text, utils, navbar }    
+export { container, form, text, utils, navbar, modal }    

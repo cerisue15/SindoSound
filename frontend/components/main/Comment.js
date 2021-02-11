@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux'
 import { fetchUsersData } from '../../redux/actions/index'
 import { container, utils, text } from '../styles'
 import { timeDifference } from '../utils'
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 function Comment(props) {
     const [comments, setComments] = useState([])
@@ -89,8 +91,15 @@ function Comment(props) {
     }
 
     return (
-        <View style={[container.container, container.alignItemsCenter, utils.backgroundWhite]}>
+        <View style={[container.container, container.alignItemsCenter, utils.backgroundBlack]}>
+            
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#2560F6', '#00FFF0','transparent']}
+                style={utils.background}
+            />
             <FlatList
+                style={{marginTop: 10}}
                 numColumns={1}
                 horizontal={false}
                 data={comments}
@@ -119,9 +128,9 @@ function Comment(props) {
                                     )
                                 }
                                 <View>
-                                    <Text style={[utils.margin15Right, utils.margin5Bottom]}>
+                                    <Text style={[utils.margin15Right, utils.margin5Bottom, text.white]}>
 
-                                        <Text style={[text.bold]}
+                                        <Text style={[text.bold, text.white]}
                                             onPress={() => props.navigation.navigate("Profile", { uid: item.user.uid })}>
                                             {item.user.name}
                                         </Text>
@@ -143,7 +152,7 @@ function Comment(props) {
                 }
             />
 
-            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundWhite, utils.borderTopGray]} >
+            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundBlack, utils.borderTopGray, utils.backgroundWhite, { marginBottom: 50 }]} >
                 {
                     props.currentUser.image == 'default' ?
                         (

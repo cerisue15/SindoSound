@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-
 import { Image } from 'react-native'
+
+import * as Linking from 'expo-linking';
+// import {AuthSession} from 'expo'
+// console.log(AuthSession.getRedirectUrl())
 
 import * as firebase from 'firebase'
 
@@ -32,6 +35,8 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig)
 }
 
+// firebase.auth().signOut();
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -39,6 +44,7 @@ import RegisterScreen from './components/auth/Register'
 import LoginScreen from './components/auth/Login'
 import MainScreen from './components/Main'
 import AddScreen from './components/main/add/Add'
+import AddPlaylistScreen from './components/main/add/AddPlaylist'
 import SaveScreen from './components/main/add/Save'
 import EditScreen from './components/main/Edit'
 import ChatScreen from './components/main/chat/Chat'
@@ -46,10 +52,7 @@ import ChatListScreen from './components/main/chat/List'
 import CommentScreen from './components/main/Comment'
 import PostScreen from './components/main/Post'
 
-
 const Stack = createStackNavigator();
-
-// firebase.auth().signOut();
 
 export class App extends Component {
   constructor(props) {
@@ -75,7 +78,9 @@ export class App extends Component {
     })
   }
   render() {
+    // Main deep link --> exp://192.168.1.20:19000/
     const { loggedIn, loaded } = this.state;
+
     if (!loaded) {
       return (
         <Image style={container.splash} source={logo} />
@@ -95,13 +100,15 @@ export class App extends Component {
     
     return (
       <Provider store={store}>
-        <NavigationContainer >
+        <NavigationContainer>
+        {/* <NavigationContainer> */}
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Add" component={AddScreen} navigation={this.props.navigation} />
+            {/* <Stack.Screen name="Add" component={AddScreen} navigation={this.props.navigation} /> */}
+            <Stack.Screen name="AddPlaylist" component={AddPlaylistScreen} navigation={this.props.navigation}/>
             <Stack.Screen name="Save" component={SaveScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Post" component={PostScreen} navigation={this.props.navigation} />
-            <Stack.Screen name="Chat" component={ChatScreen} navigation={this.props.navigation} />
+            <Stack.Screen name="Chat" component={ChatScreen} navigation={this.props.navigation}/>
             <Stack.Screen name="ChatList" component={ChatListScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Edit" component={EditScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Comment" component={CommentScreen} navigation={this.props.navigation} />
@@ -112,4 +119,4 @@ export class App extends Component {
   }
 }
 
-export default App
+export default App;

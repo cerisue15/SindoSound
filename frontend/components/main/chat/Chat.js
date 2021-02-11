@@ -114,7 +114,7 @@ function Chat(props) {
     }
 
     return (
-        <View style={[container.container, container.alignItemsCenter, utils.backgroundWhite]}>
+        <View style={[container.container, container.alignItemsCenter, utils.backgroundBlack]}>
             <FlatList
                 numColumns={1}
                 horizontal={false}
@@ -145,7 +145,7 @@ function Chat(props) {
                 }
             />
 
-            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundWhite, utils.borderTopGray]} >
+            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundBlack, utils.borderTopGray]} >
                 {
                     props.currentUser.image == 'default' ?
                         (

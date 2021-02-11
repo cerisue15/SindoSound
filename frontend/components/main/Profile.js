@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native'
-import { FontAwesome5 } from '@expo/vector-icons';
+import { View, Text, Image, FlatList, TouchableOpacity, ImageBackground } from 'react-native'
+import { FontAwesome, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import firebase from 'firebase'
 require('firebase/firestore')
 import { connect } from 'react-redux'
 
+import { LinearGradient } from 'expo-linear-gradient';
 import { text, utils, container, navbar } from '../styles'
 
 function Profile(props) {
@@ -72,7 +73,7 @@ function Profile(props) {
             .doc(props.route.params.uid)
             .delete()
     }
-
+    
     if (user === null) {
         return (
             <View style={container.form}>
@@ -81,53 +82,63 @@ function Profile(props) {
         )
     }
     return (
-        <View style={[container.container, utils.backgroundWhite]}>
-            <View style={[navbar.custom, utils.justifyCenter]}>
-                <Text style={navbar.title}>{user.username}</Text>
-            </View>
+        <View style={[container.container, utils.backgroundBlack]}>
+            
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#2560F6', '#00FFF0','transparent']}
+                style={utils.background}
+            />
+
+            <ImageBackground
+                style={{
+                    marginTop: 50,
+                    height: 50,
+                    justifyContent: 'center'
+                }}
+                source={require('../../assets/diamond-gradient.png')}>
+                <Text style={[text.top5, text.white]}>Song Titles of Top 5</Text>
+            </ImageBackground>
+
             <View style={[container.profileInfo]}>
+                <View style={[utils.padding20Vertical, container.row, utils.borderTopGray]}>
 
-                <View style={[utils.noPadding, container.row]}>
-
-                    {user.image == 'default' ?
-                        (
-                            <FontAwesome5
-                                style={[utils.profileImageBig, utils.marginBottomSmall]}
-                                name="user-circle" size={80} color="black" />
-                        )
-                        :
-                        (
-                            <Image
-                                style={[utils.profileImageBig, utils.marginBottomSmall]}
-                                source={{
-                                    uri: user.image
-                                }}
-                            />
-                        )
-                    }
-
-                    <View style={[container.container, container.horizontal, utils.justifyCenter, utils.padding10Sides]}>
-
-                        <View style={[utils.justifyCenter, text.center, container.containerImage]}>
-                            <Text style={[text.bold, text.large, text.center]}>{userPosts.length}</Text>
-                            <Text style={[text.center]}>Posts</Text>
+                    <View style={[container.container, container.horizontal, utils.justifyCenter]}>
+                        
+                        <View style={[utils.justifyCenter, text.center, container.container]}>
+                            <Text style={[text.bold, text.white, text.large, text.center]}>{user.followersCount}</Text>
+                            <Text style={[text.center, text.white]}>Followers</Text>
                         </View>
-                        <View style={[utils.justifyCenter, text.center, container.containerImage]}>
-                            <Text style={[text.bold, text.large, text.center]}>{user.followersCount}</Text>
-                            <Text style={[text.center]}>Followers</Text>
+
+                        <View style={[utils.justifyCenter, container.column, utils.padding30Sides]}>
+                            {user.image == 'default' ?
+                                (
+                                    <FontAwesome5
+                                        style={[utils.profileImageBig, utils.marginBottomSmall]}
+                                        name="user-circle" size={80} color="black" />
+                                ):(
+                                    <Image
+                                        style={[utils.profileImageBig, utils.marginBottomSmall]}
+                                        source={{
+                                            uri: user.image
+                                        }}
+                                    />
+                                )
+                            }
+                            <Text style={[navbar.title, text.white]}>{user.username}</Text>
                         </View>
-                        <View style={[utils.justifyCenter, text.center, container.containerImage]}>
-                            <Text style={[text.bold, text.large, text.center]}>{user.followingCount}</Text>
-                            <Text style={[text.center]}>Following</Text>
+
+                        <View style={[utils.justifyCenter, text.center, container.container]}>
+                            <Text style={[text.bold, text.white, text.large, text.center]}>{user.followingCount}</Text>
+                            <Text style={[text.center, text.white]}>Following</Text>
                         </View>
                     </View>
 
                 </View>
-
-
-                <View>
-                    <Text style={text.bold}>{user.name}</Text>
-                    <Text style={[text.profileDescription, utils.marginBottom]}>{user.description}</Text>
+                
+                <View style={[utils.borderTopGray, {width: '100%'}]}>
+                    <Text style={[text.bold, text.white, {marginTop: 15}]}>{user.name}</Text>
+                    <Text style={[text.white, text.profileDescription, utils.marginBottom]}>{user.description}</Text>
 
                     {props.route.params.uid !== firebase.auth().currentUser.uid ? (
                         <View style={[container.horizontal]}>
@@ -145,7 +156,7 @@ function Profile(props) {
                                         style={[utils.buttonOutlined, container.container, utils.margin15Right]}
                                         title="Follow"
                                         onPress={() => onFollow()}>
-                                        <Text style={[text.bold, text.center]}>Follow</Text>
+                                        <Text style={[text.bold, text.center, text.white]}>Follow</Text>
                                     </TouchableOpacity>
 
                                 )}
@@ -154,35 +165,43 @@ function Profile(props) {
                                 style={[utils.buttonOutlined, container.container]}
                                 title="Follow"
                                 onPress={() => props.navigation.navigate('Chat', {user})}>
-                                <Text style={[text.bold, text.center]}>Message</Text>
+                                <Text style={[text.bold, text.center, text.white]}>Message</Text>
                             </TouchableOpacity>
                         </View>
                     ) :
                         <TouchableOpacity
                             style={utils.buttonOutlined}
                             onPress={() => props.navigation.navigate('Edit')}>
-                            <Text style={[text.bold, text.center]}>Edit Profile</Text>
+                            <Text style={[text.bold, text.center, text.white]}>Edit Profile</Text>
                         </TouchableOpacity>}
                 </View>
             </View>
 
 
 
-            <View style={[utils.borderTopGray]}>
+            <View>
                 <FlatList
                     numColumns={3}
                     horizontal={false}
                     data={userPosts}
-                    style={utils.marginBottomBar}
+                    style={[utils.marginBottomBar]}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            style={[container.containerImage, utils.borderWhite]}
+                            style={[{marginHorizontal: 5},container.containerGridImage, utils.borderWhite]}
                             onPress={() => props.navigation.navigate("Post", { item, user })}>
-
-                            <Image
-                                style={container.imageForGrid}
-                                source={{ uri: item.downloadURL }}
-                            />
+                            <View style={[container.column]}>
+                                <Text style={[text.white, text.bold, text.center, {paddingVertical: 10}]}>{item.playlistTitle}</Text>
+                                <Image
+                                    style={container.imageForGrid}
+                                    source={{ uri: item.downloadURL }}
+                                /> 
+                                <View style={[container.row, { paddingVertical: 5 }]}>
+                                    <Entypo  name="controller-fast-backward" size={24} color="white" />
+                                    <FontAwesome style={{ marginHorizontal: 20 }} name="play" size={20} color="white" />
+                                    <Entypo  name="controller-fast-forward" size={24} color="white" />
+                                </View>
+                            </View>
+                            
                         </TouchableOpacity>
 
                     )}

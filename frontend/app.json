@@ -1,14 +1,15 @@
 {
   "expo": {
-    "name": "instagram",
-    "slug": "instagram",
+    "name": "sindosound",
+    "scheme": "sindosound",
+    "slug": "sindosound",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/sindo_logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +24,7 @@
       "favicon": "./assets/logo.png"
     },
     "android": {
-      "package": "simcoder.instagram"
+      "package": "sindosound.sindosound"
     }
   }
 }

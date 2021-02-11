@@ -23,8 +23,8 @@ export class Main extends Component {
     render() {
         return (
             <Tab.Navigator initialRouteName="Feed" labeled={false}
-
-                barStyle={{ backgroundColor: '#ffffff' }}>
+                barStyle={{ backgroundColor: '#000000' }}>
+                    
                 <Tab.Screen name="Feed" component={FeedScreen}
                     options={{
                         tabBarIcon: ({ color, size }) => (
@@ -41,7 +41,7 @@ export class Main extends Component {
                     listeners={({ navigation }) => ({
                         tabPress: event => {
                             event.preventDefault();
-                            navigation.navigate("Add")
+                            navigation.navigate("AddPlaylist")
                         }
                     })}
                     options={{

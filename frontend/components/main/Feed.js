@@ -8,6 +8,8 @@ import { bindActionCreators } from 'redux'
 import { reload } from '../../redux/actions/index'
 import { text, utils, container, navbar } from '../styles'
 import { timeDifference } from '../utils'
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 function Feed(props) {
     const [posts, setPosts] = useState([]);
@@ -50,10 +52,16 @@ function Feed(props) {
             .delete()
     }
     return (
-        <View style={[container.container, utils.backgroundWhite]}>
+        <View style={[container.container, utils.backgroundBlack]}>
+
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#2560F6', '#00FFF0','transparent']}
+                style={utils.background}
+            />
             <View style={[navbar.custom, utils.alignItemsCenter, container.horizontal]}>
-                <Text style={[navbar.title, container.fillHorizontal]}>Instagram</Text>
-                <Feather name="send" size={30} color="black"
+                <Text style={[navbar.title, container.fillHorizontal]}>Sindo Sound</Text>
+                <Feather name="send" size={30} color="white"
                     onPress={() => props.navigation.navigate("ChatList")}
                 />
             </View>
@@ -97,7 +105,7 @@ function Feed(props) {
                                 )
                             }
                             <View style={utils.justifyCenter}>
-                                <Text style={[text.bold, text.medium]} >{item.user.name}</Text>
+                                <Text style={[text.bold, text.medium, text.white]} >{item.user.name}</Text>
                             </View>
                         </TouchableOpacity>
                         <Image
@@ -112,18 +120,18 @@ function Feed(props) {
                                 )
                                 :
                                 (
-                                    <Feather name="heart" size={30} color="black" onPress={() => onLikePress(item.user.uid, item.id, item)} />
+                                    <Feather name="heart" size={30} color="white" onPress={() => onLikePress(item.user.uid, item.id, item)} />
 
                                 )
                             }
-                            <Feather style={utils.margin15Left} name="message-square" size={30} color="black" onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })} />
+                            <Feather style={utils.margin15Left} name="message-square" size={30} color="white" onPress={() => props.navigation.navigate('Comment', { postId: item.id, uid: item.user.uid })} />
                         </View>
                         <View style={[container.container, utils.padding10Sides]}>
-                            <Text style={[text.bold, text.medium]}>
+                            <Text style={[text.bold, text.medium, text.white]}>
                                 {item.likesCount} likes
                                 </Text>
                             <Text style={[utils.margin15Right, utils.margin5Bottom]}>
-                                <Text style={[text.bold]}
+                                <Text style={[text.bold, text.white]}
                                     onPress={() => props.navigation.navigate("Profile", { uid: item.user.id })}>
                                     {item.user.name}
                                 </Text>

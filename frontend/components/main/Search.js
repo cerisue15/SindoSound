@@ -25,7 +25,7 @@ export default function Search(props) {
             })
     }
     return (
-        <View style={[utils.backgroundWhite, container.container]}>
+        <View style={[utils.backgroundBlack, container.container]}>
             <View style={navbar.custom}>
                 <TextInput
                     style={utils.searchBar}

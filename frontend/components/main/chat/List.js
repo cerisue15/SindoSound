@@ -47,7 +47,7 @@ function Chat(props) {
 
 
     return (
-        <View style={[container.container, container.alignItemsCenter, utils.backgroundWhite]}>
+        <View style={[container.container, container.alignItemsCenter, utils.backgroundBlack]}>
             <FlatList
                 numColumns={1}
                 horizontal={false}
