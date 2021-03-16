@@ -19,7 +19,6 @@ const utils = StyleSheet.create({
         borderRadius: 100 / 2,
     },
     profileImage: {
-        marginRight: 15,
         width: 50,
         height: 50,
         borderRadius: 50 / 2,
@@ -30,7 +29,21 @@ const utils = StyleSheet.create({
         height: 35,
         borderRadius: 35 / 2,
     },
+    exportImage: {
+        width: 75,
+        height: 75,
+        borderRadius: 75 / 2,
+    },
     searchBar: {
+        backgroundColor: 'whitesmoke',
+        color: 'grey',
+        paddingLeft: 10,
+        borderRadius: 8,
+        height: 40,
+        marginTop: -5
+    },
+    messageBar: {
+        
         backgroundColor: 'whitesmoke',
         color: 'grey',
         paddingLeft: 10,
@@ -83,7 +96,7 @@ const utils = StyleSheet.create({
         // width: '100%',
         // height: 'auto',
         position: 'absolute',
-        opacity: 0.075,
+        opacity: 0.1,
         left: 0,
         right: 0,
         top: 0,
@@ -137,8 +150,8 @@ const navbar = StyleSheet.create({
         height: 60,
         // backgroundColor: 'black',
         padding: 15,
-        borderBottomWidth: 1,
-        borderColor: 'white'
+        // borderBottomWidth: 1,
+        // borderColor: 'white'
     },
 
     title: {
@@ -169,6 +182,10 @@ const container = StyleSheet.create({
         flexDirection: 'row',
         display: 'flex',
     },
+    vertical: {
+        flexDirection: 'column',
+        display: 'flex',
+    },
     form: {
         flex: 1,
         margin: 25
@@ -197,7 +214,7 @@ const container = StyleSheet.create({
         flex: 1 / 3,
     },
     containerGridImage: {
-        flex: 1 / 3,
+        // flex: 1 / 3,
         borderWidth: 1,
         borderColor: 'white',
         // paddingVertical: 5,
@@ -212,6 +229,12 @@ const container = StyleSheet.create({
         alignSelf: 'center',
         height: (Dimensions.get('window').width - 30) / 3,
     },
+    imageForHorizontalScroll: {
+        // flex: 1,
+        aspectRatio: 1 / 1,
+        // alignSelf: 'center',
+        height: (Dimensions.get('window').width - 30) / 3,
+    },
     imageForImport: {
         flex: 1,
         aspectRatio: 1 / 1,
@@ -220,7 +243,6 @@ const container = StyleSheet.create({
     },
     fillHorizontal: {
         flexGrow: 1,
-        paddingBottom: 0
     },
     imageSmall: {
         aspectRatio: 1 / 1,
@@ -257,6 +279,14 @@ const container = StyleSheet.create({
 })
 
 const form = StyleSheet.create({
+    authButton: {
+        alignContent: 'center',
+        borderColor: 'gray',
+        backgroundColor: 'black',
+        borderWidth: 1,
+        padding: 10,
+        color: 'white',
+    },
     textInput: {
         marginBottom: 10,
         borderColor: 'gray',
@@ -344,8 +374,7 @@ const modal = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'lightgray',
         borderStyle: 'solid',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
+        padding: 10,
         borderRadius: 10,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },

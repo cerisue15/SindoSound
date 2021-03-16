@@ -43,7 +43,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterScreen from './components/auth/Register'
 import LoginScreen from './components/auth/Login'
 import MainScreen from './components/Main'
-import AddScreen from './components/main/add/Add'
 import AddPlaylistScreen from './components/main/add/AddPlaylist'
 import SaveScreen from './components/main/add/Save'
 import EditScreen from './components/main/Edit'
@@ -91,7 +90,7 @@ export class App extends Component {
       return (
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="Register" component={RegisterScreen} navigation={this.props.navigation} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" navigation={this.props.navigation} component={RegisterScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Login" navigation={this.props.navigation} component={LoginScreen} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
@@ -101,13 +100,12 @@ export class App extends Component {
     return (
       <Provider store={store}>
         <NavigationContainer>
-        {/* <NavigationContainer> */}
           <Stack.Navigator initialRouteName="Main">
-            <Stack.Screen name="Main" component={MainScreen} options={{ headerShown: false }} />
-            {/* <Stack.Screen name="Add" component={AddScreen} navigation={this.props.navigation} /> */}
+            <Stack.Screen name=" " component={MainScreen} options={{ headerShown: false }} />
             <Stack.Screen name="AddPlaylist" component={AddPlaylistScreen} navigation={this.props.navigation}/>
             <Stack.Screen name="Save" component={SaveScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Post" component={PostScreen} navigation={this.props.navigation} />
+            {/* <Stack.Screen name="FollowList" component={FollowListScreen} navigation={this.props.navigation} /> */}
             <Stack.Screen name="Chat" component={ChatScreen} navigation={this.props.navigation}/>
             <Stack.Screen name="ChatList" component={ChatListScreen} navigation={this.props.navigation} />
             <Stack.Screen name="Edit" component={EditScreen} navigation={this.props.navigation} />

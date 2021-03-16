@@ -8,8 +8,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchUserChats } from '../../../redux/actions/index'
 
-import { text, utils, container, navbar } from '../../styles'
+import { text, utils, container, form } from '../../styles'
 import { timeDifference } from '../../utils'
+
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 function Chat(props) {
     const [user, setUser] = useState(props.route.params.user)
@@ -115,6 +118,13 @@ function Chat(props) {
 
     return (
         <View style={[container.container, container.alignItemsCenter, utils.backgroundBlack]}>
+
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#2560F6', '#00FFF0','transparent']}
+                style={utils.background}
+            />
+
             <FlatList
                 numColumns={1}
                 horizontal={false}
@@ -145,7 +155,7 @@ function Chat(props) {
                 }
             />
 
-            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundBlack, utils.borderTopGray]} >
+            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundBlack, utils.borderTopGray, { marginHorizontal: 15}]} >
                 {
                     props.currentUser.image == 'default' ?
                         (
@@ -167,7 +177,8 @@ function Chat(props) {
                 < TextInput
                     ref={input => { setTextInput(input) }}
                     value={input}
-                    style={[container.fillHorizontal]}
+                    multiline
+                    style={[form.textInput, { maxHeight: 100, width: '80%'}]}
                     placeholder='Message...'
                     onChangeText={(input) => setInput(input)} />
 
@@ -179,6 +190,8 @@ function Chat(props) {
                     </View>
                 </TouchableOpacity >
             </View >
+
+            <View style={{margin: 15}}></View>
 
         </View >
     )

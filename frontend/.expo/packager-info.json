@@ -1,10 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 71797,
-  "webpackServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPort": 19003,
+  "packagerPid": 73269,
+  "expoServerNgrokUrl": "https://wq-iq2.cerisue.frontend.exp.direct",
+  "packagerNgrokUrl": "https://packager.wq-iq2.cerisue.frontend.exp.direct",
+  "ngrokPid": 73316
 }

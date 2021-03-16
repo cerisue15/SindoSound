@@ -58,20 +58,44 @@ function Profile(props) {
     }, [props.route.params.uid, props.following, props.currentUser, props.posts])
 
     const onFollow = () => {
-        firebase.firestore()
+        const batch = firebase.firestore().batch();
+        let docRefFollowing = firebase.firestore()
             .collection("following")
             .doc(firebase.auth().currentUser.uid)
             .collection("userFollowing")
+            .doc(props.route.params.uid);
+            batch.set(docRefFollowing, {});
+
+        let docRefFollower = firebase.firestore()
+            .collection("followers")
             .doc(props.route.params.uid)
-            .set({})
+            .collection("userFollowedBy")
+            .doc(firebase.auth().currentUser.uid);
+            batch.set(docRefFollower, {});
+
+        batch.commit().catch((error) => {
+            console.log(error)
+        })
     }
     const onUnfollow = () => {
-        firebase.firestore()
+        const batch = firebase.firestore().batch();
+        let docRefFollowing = firebase.firestore()
             .collection("following")
             .doc(firebase.auth().currentUser.uid)
             .collection("userFollowing")
+            .doc(props.route.params.uid);
+            batch.delete(docRefFollowing);
+
+        let docRefFollower = firebase.firestore()
+            .collection("followers")
             .doc(props.route.params.uid)
-            .delete()
+            .collection("userFollowedBy")
+            .doc(firebase.auth().currentUser.uid);
+            batch.delete(docRefFollower);
+
+        batch.commit().catch((error) => {
+            console.log(error)
+        })
     }
     
     if (user === null) {
@@ -101,37 +125,43 @@ function Profile(props) {
             </ImageBackground>
 
             <View style={[container.profileInfo]}>
-                <View style={[utils.padding20Vertical, container.row, utils.borderTopGray]}>
+
+                <View style={[utils.justifyCenter, container.column, utils.padding30Sides]}>
+                    {user.image == 'default' ?
+                        (
+                            <FontAwesome5
+                                style={[utils.profileImageBig, utils.marginBottomSmall]}
+                                name="user-circle" size={80} color="black" />
+                        ):(
+                            <Image
+                                style={[utils.profileImageBig, utils.marginBottomSmall]}
+                                source={{
+                                    uri: user.image
+                                }}
+                            />
+                        )
+                    }
+                    <Text style={[navbar.title, text.white]}>{`@${user.username}`}</Text>
+                </View>
+
+                <View style={[utils.padding20Vertical, container.row]}>
 
                     <View style={[container.container, container.horizontal, utils.justifyCenter]}>
                         
-                        <View style={[utils.justifyCenter, text.center, container.container]}>
+                        <TouchableOpacity style={[utils.justifyCenter, text.center, container.container]}>
                             <Text style={[text.bold, text.white, text.large, text.center]}>{user.followersCount}</Text>
                             <Text style={[text.center, text.white]}>Followers</Text>
-                        </View>
-
-                        <View style={[utils.justifyCenter, container.column, utils.padding30Sides]}>
-                            {user.image == 'default' ?
-                                (
-                                    <FontAwesome5
-                                        style={[utils.profileImageBig, utils.marginBottomSmall]}
-                                        name="user-circle" size={80} color="black" />
-                                ):(
-                                    <Image
-                                        style={[utils.profileImageBig, utils.marginBottomSmall]}
-                                        source={{
-                                            uri: user.image
-                                        }}
-                                    />
-                                )
-                            }
-                            <Text style={[navbar.title, text.white]}>{user.username}</Text>
-                        </View>
+                        </TouchableOpacity>
 
                         <View style={[utils.justifyCenter, text.center, container.container]}>
+                            <Text style={[text.bold, text.white, text.large, text.center]}>{user.postCount}</Text>
+                            <Text style={[text.center, text.white]}>Posts</Text>
+                        </View>
+
+                        <TouchableOpacity style={[utils.justifyCenter, text.center, container.container]}>
                             <Text style={[text.bold, text.white, text.large, text.center]}>{user.followingCount}</Text>
                             <Text style={[text.center, text.white]}>Following</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
 
                 </View>
@@ -179,27 +209,22 @@ function Profile(props) {
 
 
 
-            <View>
+            <View style={[{}]}>
                 <FlatList
                     numColumns={3}
                     horizontal={false}
                     data={userPosts}
-                    style={[utils.marginBottomBar]}
+                    style={[{}]}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            style={[{marginHorizontal: 5},container.containerGridImage, utils.borderWhite]}
+                            style={[{margin: 4}, utils.borderWhite]}
                             onPress={() => props.navigation.navigate("Post", { item, user })}>
                             <View style={[container.column]}>
-                                <Text style={[text.white, text.bold, text.center, {paddingVertical: 10}]}>{item.playlistTitle}</Text>
+                                <Text style={[text.white, text.bold, text.center, {paddingVertical: 10}]}>{item.playlistTitle.length > 15 ? `${item.playlistTitle.slice(0, 15)} ...` : item.playlistTitle}</Text>
                                 <Image
                                     style={container.imageForGrid}
                                     source={{ uri: item.downloadURL }}
                                 /> 
-                                <View style={[container.row, { paddingVertical: 5 }]}>
-                                    <Entypo  name="controller-fast-backward" size={24} color="white" />
-                                    <FontAwesome style={{ marginHorizontal: 20 }} name="play" size={20} color="white" />
-                                    <Entypo  name="controller-fast-forward" size={24} color="white" />
-                                </View>
                             </View>
                             
                         </TouchableOpacity>
@@ -216,6 +241,7 @@ function Profile(props) {
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser,
     posts: store.userState.posts,
-    following: store.userState.following
+    following: store.userState.following,
+    followers: store.userState.followers,
 })
 export default connect(mapStateToProps, null)(Profile);

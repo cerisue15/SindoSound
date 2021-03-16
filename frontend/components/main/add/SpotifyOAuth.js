@@ -5,11 +5,15 @@ import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
 import * as AuthSession from 'expo-auth-session';
 import {decode as atob, encode as btoa} from 'base-64'
 import axios from 'axios';
+import qs from 'qs';
 import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '@env'
 import { Image } from 'react-native';
 import { text, utils, container } from '../../styles'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
+SecureStore.deleteItemAsync('SPOTIFY_AUTH_KEY')
+const SPOTIFY_AUTH_KEY = 'SPOTIFY_AUTH_KEY';
 WebBrowser.maybeCompleteAuthSession();
 
 // Endpoint
@@ -18,11 +22,13 @@ const discovery = {
   tokenEndpoint: 'https://accounts.spotify.com/api/token',
 };
 
+const record = {
+    'show_dialog': 'true'
+};
+
 export default function SpotifyOAuth() {
 
     const [isAuthSuccess, setIsAuthSuccess] = useState(false);
-    const [token, setToken] = useState(undefined);
-    const [playlists, setPlaylists] = useState([]);
 
     const [request, response, promptAsync] = useAuthRequest(
         {
@@ -37,63 +43,59 @@ export default function SpotifyOAuth() {
         // this must be set to false
         usePKCE: false,
         // For usage in managed apps using the proxy
-            redirectUri: 'exp://192.168.1.20:19000'
-            // redirectUri: 'https://auth.expo.io/@cerisue/sindosound' for production
+        redirectUri: 'exp://192.168.1.20:19000',
+        // redirectUri: 'https://auth.expo.io/@cerisue/sindosound' for production
+        extraParams: record  
         },
         discovery
     );
 
     React.useEffect(() => {
         if (response?.type === 'success') {
+            console.log(response.params);
             const { code } = response.params;
-            console.log(code)
-            setIsAuthSuccess(true);
 
-            // getPlaylists();
+            getToken(code);
         }
-
     }, [response]);
 
-    const getPlaylists = () => {
+    const getToken = (code) => {
+        const credsB64 = btoa(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`);
 
-        axios('https://accounts.spotify.com/api/token', {
-            method: 'POST',
-            headers: { 
-                'Authorization' : 'Basic ' + btoa(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET),
-                'Content-Type' : 'application/x-www-form-urlencoded'
-            },
-            data: 'grant_type=client_credentials'
-        }) 
-        .then(tokenResponse => {
+        axios('https://accounts.spotify.com/api/token',{
+                method: 'post',
+                headers: { 
+                    'Authorization': `Basic ${credsB64}`,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: `grant_type=authorization_code&code=${code}&redirect_uri=exp://192.168.1.20:19000`
+            }).then(tokenResponse => {
+                const storageValue = tokenResponse.data;
+                console.log(storageValue)
 
-            console.log(tokenResponse.data.access_token);
-            setToken(tokenResponse.data.access_token);
-
-            axios('https://api.spotify.com/v1/me/playlists', {
-                method: 'GET',
-                headers: { 'Authorization' : 'Bearer ' + tokenResponse.data.access_token }
-            }) 
-            .then (playlistsResponse => {
-                setPlaylists(playlistsResponse.data.items);
-
-                console.log(playlists);
+                if (Platform.OS !== 'web') {
+                    // Securely store the auth on your device
+                    SecureStore.setItemAsync(SPOTIFY_AUTH_KEY, storageValue.refresh_token);
+                }
+                setIsAuthSuccess(true);
+            }).catch((error) => {
+                console.log('it failed')
+                console.log(error)
             })
-        })
-
     }
+    
+    return (
 
-  return (
-
-    <TouchableOpacity 
-        style={container.container, { height: '75%' }} 
-        onPress={() => {
-            promptAsync();
-        }}
-    >
-        <Image
-            style={container.imageForImport}
-            source={require('../../../assets/spotify_icon.png')}
-        />
-    </TouchableOpacity >
-  );
+        <TouchableOpacity 
+            style={[ { height: '75%' }]} 
+            onPress={() => {
+                promptAsync();
+            }}
+        >
+            <Image
+                style={container.imageForImport}
+                source={require('../../../assets/spotify_icon.png')}
+            />
+        </TouchableOpacity >
+    );
 }

@@ -8,9 +8,6 @@ import * as Device from 'expo-device';
 
 import { text, utils, container } from '../../styles'
 
-
-
-
 export default function Add({ navigation }) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(null);

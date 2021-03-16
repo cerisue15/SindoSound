@@ -2,6 +2,7 @@ import {
     USER_STATE_CHANGE
     , USER_POSTS_STATE_CHANGE
     , USER_FOLLOWING_STATE_CHANGE
+    , USER_FOLLOWERS_STATE_CHANGE
     , USER_CHATS_STATE_CHANGE
     , CLEAR_DATA
 } from "../constants"
@@ -11,6 +12,7 @@ const initialState = {
     posts: [],
     chats: [],
     following: [],
+    followers: []
 }
 
 export const user = (state = initialState, action) => {
@@ -25,11 +27,15 @@ export const user = (state = initialState, action) => {
                 ...state,
                 posts: action.posts
             }
-
         case USER_FOLLOWING_STATE_CHANGE:
             return {
                 ...state,
                 following: action.following
+            }
+        case USER_FOLLOWERS_STATE_CHANGE:
+            return {
+                ...state,
+                followers: action.followers
             }
         case USER_CHATS_STATE_CHANGE: {
             return {

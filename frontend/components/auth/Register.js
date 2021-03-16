@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { View, Button, TextInput, Text } from 'react-native'
+import { View, Button, TextInput, Text, TouchableOpacity, Image } from 'react-native'
 import { form, container, utils, text } from '../styles';
 import { LinearGradient } from 'expo-linear-gradient';
-
-
+import SpotifyOAuth from '../main/add/SpotifyOAuth'
 import firebase from 'firebase'
 require('firebase/firestore');
 
@@ -12,6 +11,7 @@ export default function Register(props) {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
+    const [error, setError] = useState('');
 
     const onRegister = () => {
         firebase.firestore()
@@ -35,17 +35,19 @@ export default function Register(props) {
                                     image: 'default',
                                     followingCount: 0,
                                     followersCount: 0,
-
+                                    postCount: 0,
                                 })
+                            props.navigation.navigate("Login")
                         })
                         .catch((error) => {
                             console.log(error)
+                            setError(error.message)
                         })
                 }
             }).catch((error) => {
                 console.log(error)
+                setError(error.message)
             })
-
     }
 
     return (
@@ -56,7 +58,40 @@ export default function Register(props) {
                 colors={['#2560F6', '#00FFF0','transparent']}
                 style={utils.background}
             />
+
             <View style={container.formCenter}>
+
+                <View style={{ marginBottom: 50, justifyContent: 'center'}}>
+                    <Text style={[text.white, {textAlign: 'center', marginVertical: 15, fontSize: 20}]}>
+                        Login to your Music Service(s)
+                    </Text>
+
+                    <View style={[utils.backgroundWhite, container.horizontal, { borderRadius: '35%',  height: 100, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }]}>
+                        <SpotifyOAuth/>
+                        <TouchableOpacity 
+                            disabled={true}
+                            style={[{ height: '80%', marginHorizontal: 25 }]} 
+                            onPress={() => {}}
+                        >
+                            <Image
+                                style={[container.imageForGrid, {opacity: 0.5}]}
+                                source={require('../../assets/tidal_icon.png')}
+                            /> 
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            disabled={true}
+                            style={[ { height: '75%', opacity: 0.5}]} 
+                            onPress={() => {}}
+                        >
+                            <Image
+                                style={container.imageForGrid}
+                                source={require('../../assets/apple_icon.png')}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
                 <TextInput
                     style={form.textInput}
                     placeholder="username"
@@ -80,10 +115,15 @@ export default function Register(props) {
                 />
 
                 <Button
-                    style={form.button}
+                    style={form.authButton}
                     onPress={() => onRegister()}
                     title="Register"
                 />
+
+                <Text
+                    style={[{color: 'red'}, text.center, {marginTop: 10}]}>
+                    {error}
+                </Text>
             </View>
 
             <View style={[form.bottomButton, { marginBottom: 50 }]} >

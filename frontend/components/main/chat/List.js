@@ -12,10 +12,15 @@ import { fetchUsersData } from '../../../redux/actions/index'
 import { text, utils, container } from '../../styles'
 import { timeDifference } from '../../utils'
 
+import { LinearGradient } from 'expo-linear-gradient';
+
+
 function Chat(props) {
     const [chats, setChats] = useState([])
+
     useEffect(() => {
         console.log(props.chats)
+        console.log(props.users)
 
         for (let i = 0; i < props.chats.length; i++) {
             if (props.chats[i].hasOwnProperty('otherUser')) {
@@ -30,7 +35,7 @@ function Chat(props) {
 
             const user = props.users.find(x => x.uid === otherUserId)
             if (user == undefined) {
-                props.fetchUsersData(comments[i].creator, false)
+                props.fetchUsersData(otherUserId, false)
             } else {
                 props.chats[i].otherUser = user
             }
@@ -48,13 +53,23 @@ function Chat(props) {
 
     return (
         <View style={[container.container, container.alignItemsCenter, utils.backgroundBlack]}>
+            
+            <LinearGradient
+                // Background Linear Gradient
+                colors={['#2560F6', '#00FFF0','transparent']}
+                style={utils.background}
+            />
+
+            <View style={{margin: 15}}></View>
+
             <FlatList
                 numColumns={1}
+                style={{marginHorizontal: 10 }}
                 horizontal={false}
                 data={chats}
                 renderItem={({ item }) => (
 
-                    <View>
+                    <View style={{ justifyContent : 'center'}}>
                         {item.otherUser == null ? (
                             <FontAwesome5
                                 style={[utils.profileImageSmall]}
@@ -70,12 +85,12 @@ function Chat(props) {
                                         {item.otherUser.image == 'default' ? (
                                             <FontAwesome5
                                                 style={[utils.profileImageSmall]}
-                                                name="user-circle" size={35} color="black" />
+                                                name="user-circle" size={50} color="black" />
                                         )
                                             :
                                             (
                                                 <Image
-                                                    style={[utils.profileImageSmall]}
+                                                    style={[utils.profileImage]}
                                                     source={{
                                                         uri: item.otherUser.image
                                                     }} />
@@ -84,10 +99,10 @@ function Chat(props) {
 
                                     </View>
 
-                                    <View>
-                                        <Text style={[text.bold]}>{item.otherUser.name}</Text>
+                                    <View style={{ marginLeft: 10}}>
+                                        <Text style={[text.bold, text.white]}>{item.otherUser.name}</Text>
 
-                                        <Text numberOfLines={1} ellipsizeMode='tail' style={[utils.margin15Right, utils.margin5Bottom]}>
+                                        <Text numberOfLines={1} ellipsizeMode='tail' style={[text.white, utils.margin15Right, utils.margin5Bottom]}>
                                             {item.lastMessage} {" "}
                                             {item.lastMessageTimestamp == null ? (
 
@@ -107,8 +122,7 @@ function Chat(props) {
 
                     </View>
 
-                )
-                }
+                )}
             />
         </View >
     )

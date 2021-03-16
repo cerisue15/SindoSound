@@ -8,7 +8,7 @@ require('firebase/firestore')
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { fetchUsersData } from '../../redux/actions/index'
-import { container, utils, text } from '../styles'
+import { container, utils, text, form } from '../styles'
 import { timeDifference } from '../utils'
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -152,7 +152,7 @@ function Comment(props) {
                 }
             />
 
-            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundBlack, utils.borderTopGray, utils.backgroundWhite, { marginBottom: 50 }]} >
+            < View style={[container.horizontal, utils.padding10, utils.alignItemsCenter, utils.backgroundBlack, utils.borderTopGray, { marginHorizontal: 15}]} >
                 {
                     props.currentUser.image == 'default' ?
                         (
@@ -174,7 +174,7 @@ function Comment(props) {
                 < TextInput
                     ref={input => { setTextInput(input) }}
                     value={input}
-                    style={[container.fillHorizontal]}
+                    style={[form.textInput, { maxHeight: 100, width: '80%'}]}
                     placeholder='comment...'
                     onChangeText={(input) => setInput(input)} />
 
@@ -186,6 +186,8 @@ function Comment(props) {
                     </View>
                 </TouchableOpacity >
             </View >
+            
+            <View style={{margin: 15}}></View>
 
         </View >
     )

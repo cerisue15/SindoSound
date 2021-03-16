@@ -2,6 +2,7 @@ import {
     USER_STATE_CHANGE
     , USER_POSTS_STATE_CHANGE
     , USER_FOLLOWING_STATE_CHANGE
+    , USER_FOLLOWERS_STATE_CHANGE
     , USERS_DATA_STATE_CHANGE
     , USERS_POSTS_STATE_CHANGE
     , USERS_LIKES_STATE_CHANGE
@@ -23,6 +24,7 @@ export function reload() {
         dispatch(fetchUser())
         dispatch(fetchUserPosts())
         dispatch(fetchUserFollowing())
+        dispatch(fetchUserFollowers())
         dispatch(fetchUserChats())
 
     })
@@ -77,7 +79,6 @@ export function fetchUserPosts() {
     })
 }
 
-
 export function fetchUserFollowing() {
     return ((dispatch) => {
         firebase.firestore()
@@ -92,6 +93,25 @@ export function fetchUserFollowing() {
                 dispatch({ type: USER_FOLLOWING_STATE_CHANGE, following });
                 for (let i = 0; i < following.length; i++) {
                     dispatch(fetchUsersData(following[i], true));
+                }
+            })
+    })
+}
+
+export function fetchUserFollowers() {
+    return ((dispatch) => {
+        firebase.firestore()
+            .collection("followers")
+            .doc(firebase.auth().currentUser.uid)
+            .collection("userFollowedBy")
+            .onSnapshot((snapshot) => {
+                let followers = snapshot.docs.map(doc => {
+                    const id = doc.id;
+                    return id
+                })
+                dispatch({ type: USER_FOLLOWERS_STATE_CHANGE, followers });
+                for (let i = 0; i < followers.length; i++) {
+                    dispatch(fetchUsersData(followers[i], false));
                 }
             })
     })

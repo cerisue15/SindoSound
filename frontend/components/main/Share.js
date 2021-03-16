@@ -9,7 +9,7 @@ const ShareExample = (props) => {
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+          'Check out this playlist on Sindo!',
         url: imageUri,
         title: 'Title'
       });

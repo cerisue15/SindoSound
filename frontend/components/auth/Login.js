@@ -10,14 +10,18 @@ import firebase from 'firebase'
 export default function Login(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const onSignUp = () => {
+        setError('')
+
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((result) => {
                 console.log(result)
             })
             .catch((error) => {
                 console.log(error)
+                setError(error.message)
             })
     }
 
@@ -51,10 +55,15 @@ export default function Login(props) {
                 />
 
                 <Button
-                    style={form.button}
+                    style={form.authButton}
                     onPress={() => onSignUp()}
                     title="Sign In"
                 />
+
+                <Text
+                    style={[{color: 'red'}, text.center, {marginTop: 10}]}>
+                    {error}
+                </Text>
             </View>
 
 

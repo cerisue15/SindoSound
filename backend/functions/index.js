@@ -89,3 +89,38 @@ exports.addComment = functions.firestore
             commentsCount: admin.firestore.FieldValue.increment(1),
           });
     });
+
+exports.deleteComment = functions.firestore
+    .document("/posts/{creatorId}/userPosts/{postId}/comments/{userId}")
+    .onDelete((snap, context) => {
+      return db
+          .collection("posts")
+          .doc(context.params.creatorId)
+          .collection("userPosts")
+          .doc(context.params.postId)
+          .update({
+            commentsCount: admin.firestore.FieldValue.increment(-1),
+          });
+    });
+
+exports.addPost = functions.firestore
+    .document("/users/{userId}")
+    .onUpdate((snap, context) => {
+      return db
+          .collection("users")
+          .doc(context.params.userId)
+          .update({
+            postCount: admin.firestore.FieldValue.increment(1),
+          });
+    });
+
+exports.deletePost = functions.firestore
+    .document("/posts/{creatorId}/userPosts/{postId}")
+    .onDelete((snap, context) => {
+      return db
+          .collection("users")
+          .doc(context.params.userId)
+          .update({
+            postCount: admin.firestore.FieldValue.increment(-1),
+          });
+    });

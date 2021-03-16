@@ -6,14 +6,15 @@ import * as ImagePicker from 'expo-image-picker';
 import firebase from 'firebase'
 require('firebase/firestore')
 import { connect } from 'react-redux'
-
+import * as SecureStore from 'expo-secure-store';
 import { container, form, utils, navbar, text } from '../styles'
 const account = require('../../assets/account.svg')
 
-
 function Edit(props) {
     const [name, setName] = useState(props.currentUser.name);
-    const [description, setDescription] = useState(props.currentUser.description);
+    const [description, setDescription] = useState(props.currentUser.description !== undefined 
+                                                    ? props.currentUser.description 
+                                                    : '');
     const [image, setImage] = useState(props.currentUser.image);
     const [imageChanged, setImageChanged] = useState(false);
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
@@ -22,6 +23,7 @@ function Edit(props) {
 
 
     const onLogout = () => {
+        SecureStore.deleteItemAsync('SPOTIFY_AUTH_KEY');
         firebase.auth().signOut();
     }
 
