@@ -1,5 +1,4 @@
- 
-frontend/node_modules
+node_modules/
 .env
-frontend/.expo/web/cache
+.expo/web/cache
 firebase-debug.log
